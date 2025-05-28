@@ -105,8 +105,6 @@ nextstrain check-setup
 #### Clone the repository:
 
 ```
-git clone https://github.com/nextstrain/mpox.git
-cd mpox/phylogenetic
 git clone https://github.com/NW-PaGe/mpox.git
 ```
 
