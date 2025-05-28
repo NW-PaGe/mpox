@@ -105,9 +105,7 @@ nextstrain check-setup
 #### Clone the repository:
 
 ```
-git clone https://github.com/nextstrain/mpox.git
-cd mpox/phylogenetic
-git clone https://github.com/DOH-SML1303/wa_mpxv.git
+git clone https://github.com/NW-PaGe/mpox
 ```
 
 ## Run the Build With Test Data
