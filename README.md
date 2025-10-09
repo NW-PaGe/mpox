@@ -202,7 +202,7 @@ This build can be customized for use by other states, cities, counties, or count
   - `wa_description.md`: Alter your builds description
 
 ## Contributing
-For any questions please submit them to our [Discussions] https://github.com/orgs/NW-PaGe/discussions/categories/q-a page otherwise software issues and requests can be logged as a Git [Issue] https://github.com/NW-PaGe/wa_mpxv/issues.
+For any questions please submit them to our [Discussions](https://github.com/orgs/NW-PaGe/discussions/categories/q-a) otherwise software issues and requests can be logged as a Git [Issue](https://github.com/NW-PaGe/wa_mpxv/issues).
 
 ## License
 This project is licensed under a modified GPL-3.0 License.
