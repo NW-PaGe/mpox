@@ -11,7 +11,7 @@
 - **Nextstrain Build/s Location/s**: https://nextstrain.org/groups/wadoh/mpox/wa
 
 ## Table of Contents
-- [Pathogen Background](#pathogen-background)
+- [Pathogen Epidemiology](#pathogen-epidemiology)
 - [Scientific Decisions](#scientific-decisions)
 - [Getting Started](#getting-started)
   - [Data Sources & Inputs](#data-sources--inputs)
@@ -19,14 +19,14 @@
     - [Installation](#installation)
     - [Clone the repository](#clone-the-repository)
 - [Run the Build](#run-the-build-with-test-data)
-- [Repository File Structure Overview](#repository-file-structure-overview)
-- [Expected Outputs](#expected-outputs)
+  - [Expected Outputs](#expected-outputs)
+  - [Visualizing Results](#visualize-results)
 - [Customization for Local Adaptation](#customization-for-local-adaptation)
 - [Contributing](#contributing)
 - [License](#license)
 - [Acknowledgements](#acknowledgements)
 
-## Pathogen Background
+## Pathogen Epidemiology
 As of 2025, there are three recognized clades of MPOX:
 - Clade I: Present in the Congo Basin, causes up to 10% human mortality and is transmitted by rodents with little known human-to-human spread.
 - Clade IIa: Present in West Africa, has a low mortality and is also zoonotic. 
@@ -123,55 +123,31 @@ Ensure you are in the `mpox/phylogenetic` folder when running this build.
  nextstrain build --cpus 6 . --configfile wa_mpxv/wa_config_hmpxv1.yaml
 ```
 
-## Repository File Structure Overview
-This Nextstrain build follows the structure detailed in the [Pathogen Repo Guide](https://github.com/nextstrain/pathogen-repo-guide).
-
-The file structure of the repository is as follows with `*`" folders denoting folders that are the build's expected outputs.
-`mpox/phylogenetic`
-```
-.
-├── README.md
-├── Snakefile
-├── .snakemake
-├── auspice*
-├── bin
-├── build-configs
-├── data
-├── defaults
-├── example_data
-├── logs
-├── profiles
-├── results*
-├── rules
-└── scripts
-├── wa_mpxv
-```
-The MPXV wiki page provides an in-depth overview of several key folders with this repo. [Link to wiki](https://github.com/NW-PaGe/mpox/wiki) 
-- `.snakemake/`: This folder is created by the Snakemake workflow management system and contains important components that assist in the execution and management of data workflows. The contents help manage the workflow's execution efficiently, ensuring reproducibility and tracking changes throughout the data processing pipeline. 
-- `bin/`: Inert files that outline Slack tokens that alert users on Slack of when the build is starting, if an error occurs, where it is being deployed and if it was successful. 
-- `build-configs/`: Inert files and folders that have been included for automating Nextstrain builds.
-- `data/`: Contains ingested compressed metadata and sequences folders that are then decompressed into their respected .tsv and .fasta files.
-- `defaults/`: Folder contains default parameters for the build.
-- `example_data/`: Folder containing example data for testing out a build run.
-- `logs/`: A folder created by Snakemake that is used to store log files that capture detailed information about the execution of the workflow. This folder is essential for monitoring, debugging, and optimizing workflow runs.  
-- `profiles/`: This folder is created by Snakemake and is vital for organizing and managing environment-specific configurations, enabling users to run workflows efficiently and consistently across different computing setups. It enhances the flexibility and usability of Snakemake, particularly in multi-user environments or when transitioning between local and distributed computing resources.
-
-- `rules/`: This folder is created by Snakemake and is a dedicated directory for rule definitions relating to your workflow.
-  - [Link to `rules` folder wiki](https://github.com/NW-PaGe/mpox/wiki/rules)
-
-- `scripts/`: This folder contains Python scripts dedicated to the workflow.
-  - [Link to `scripts` folder wiki](https://github.com/NW-PaGe/mpox/wiki/scripts)
-
-- `wa_mpxv/`: Folder containing the workflow for building a Washington focused MPXV Clade IIb build.
-  - [Link to `wa_mpxv` folder wiki](https://github.com/NW-PaGe/mpox/wiki/wa_mpxv)  
-
-
 ## Expected Outputs
 After successfully running the build there will be two output folders containing the build results.
 
 - `auspice/` folder contains `mpox_wa.JSON` and `mpox_wa_root_sequence.JSON`
 - `results/` folder contains `hmpxv1_wa/`
-  - [Link to `results` folder wiki](https://github.com/NW-PaGe/mpox/wiki/results)  
+  - [Link to `results` folder wiki](https://github.com/NW-PaGe/mpox/wiki/results)
+  - 
+## Visualizing Results
+Once your build completes successfully, the results can be explored using Nextstrain Auspice, either locally or on the Nextstrain web platform.
+
+### Local Visualization
+To view the resulting phylogenetic tree and metadata locally:
+```
+nextstrain view auspice/
+```
+This command launches a local Auspice web server and opens your default web browser to display the Washington-focused MPOX build.
+You should see a URL such as:
+http://127.0.0.1:4000/
+
+### Interacting with the Visualization
+- Tree view: Displays the inferred evolutionary relationships among Washington and global MPXV genomes.
+- Map view: Shows the geographic spread of sequences, highlighting Washington-specific samples.
+- Entropy panel: Indicates genome regions with higher mutation rates.
+- Color by attributes: Use the sidebar to color nodes by variables such as lineage, collection date, clade, or division.
+- Filters and search: Restrict the dataset to specific time frames, divisions, or lineages to focus on regional dynamics.
 
 ## Customization for Local Adaptation
 This build can be customized for use by other states, cities, counties, or countries. By utilizing the Washington focused folder model, `mpox/phylogenetic/wa_mpxv`, and altering specifications within the files to meet your needs, the Global MPXV Nextstrain build can be tailored to fit your requirements. The following steps are recommendations on how to easily alter the build to meet your adaptations:
