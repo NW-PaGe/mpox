@@ -27,14 +27,56 @@
 - [Acknowledgements](#acknowledgements)
 
 ## Pathogen Epidemiology
-As of 2025, there are three recognized clades of MPOX:
-- Clade I: Present in the Congo Basin, causes up to 10% human mortality and is transmitted by rodents with little known human-to-human spread.
-- Clade IIa: Present in West Africa, has a low mortality and is also zoonotic. 
-- Clade IIb: Currently spreading globally via human transmission. 
+ ### Overview
+  - #### Pathogen type and family:
+    - Monkeypox virus (MPXV) is a double-stranded DNA virus belonging to the genus Orthopoxvirus within the family Poxviridae.
+    - It is closely related to variola virus (the causative agent of smallpox), vaccinia virus, and cowpox virus.
+  - #### Key subtypes/lineages relevant to the build:
+    - As of 2025, three primary clades of MPXV are recognized:
+      - Clade I (Congo Basin clade): Found predominantly in Central Africa. Historically associated with severe disease and case fatality rates up to 10%. Transmission is primarily zoonotic, with limited human-to-human spread.
+      - Clade IIa (West African clade): Circulates in West Africa, characterized by lower virulence and mortality; transmission is mostly zoonotic.
+      - Clade IIb (Global human-to-human clade): Responsible for the global outbreak beginning in May 2022, including the cases detected in Washington State. This clade has demonstrated sustained human-to-human transmission and is the primary focus of the Washington Nextstrain build.
+  - #### Mode(s) of transmission:
+    - MPXV spreads through close contact with infected individuals or animals, contaminated materials (such as bedding or clothing), respiratory droplets, and exposure to lesion exudates. In recent global outbreaks, human-to-human transmission has been driven largely by close physical or sexual contact, often within interconnected social networks.
 
-The MPXV Nextstrain builds were created in response to the global outbreak of a novel clade IIb variant of MPXV which started in May 2022. 
+  - #### Nomenclature:
+    - WHO and global partners transitioned from region-based clade naming to a numeric system in 2022 to reduce stigmatization. Under this system, Clade I replaces “Central African,” Clade IIa replaces “West African,” and Clade IIb denotes the current outbreak lineage, often associated with the hMPXV-1 designation.
+    - The Nextstrain MPXV build follows this updated nomenclature for lineage assignment and visualization.
 
-https://pmc.ncbi.nlm.nih.gov/articles/PMC9974501/
+### Geographic Distribution and Seasonality
+  - #### Global distribution:
+    - MPXV was historically endemic to parts of Central and West Africa, maintained in small mammal reservoirs. Since 2022, Clade IIb has spread globally, with sustained transmission in North America, Europe, and other regions outside of Africa. Sporadic introductions and local clusters continue to be reported worldwide.
+
+  - #### Regional context (Washington State):
+    - Washington has reported multiple cases since 2022, primarily linked to domestic transmission of Clade IIb lineages. The Washington State Department of Health continues to monitor genetic diversity within the state to identify introductions, trace connections between cases, and detect signs of local persistence.
+
+  - #### Seasonality:
+    - Historically, MPXV transmission in endemic regions exhibits weak seasonality, often aligning with increased human–animal contact during dry seasons. In the context of global Clade IIb transmission, cases occur year-round, influenced more by behavioral and network factors than by environmental seasonality.
+
+### Public Health Importance
+  - Mpox remains a nationally notifiable condition and an emerging zoonotic and sexually associated infectious disease of concern. Ongoing genomic surveillance is critical to:
+    - Detect new introductions and sustained community transmission in Washington.
+    - Monitor for mutations that could influence transmissibility, virulence, or immune escape.
+    - Support targeted public health interventions, vaccination strategies, and contact tracing efforts.
+  - Sustained genomic monitoring also ensures rapid detection of any novel Clade IIb sublineages that could differ in clinical presentation, response to antivirals, or vaccine effectiveness.
+
+### Genomic Relevance
+  - Genomic sequencing and phylogenetic analysis are essential tools for MPXV surveillance. They enable:
+    - Detection of lineage shifts to identify newly emerging clades or introductions.
+    - Tracking of transmission chains across regions or clusters.
+    - Support for outbreak investigations, particularly where epidemiologic links are uncertain.
+    - Monitoring of vaccine escape and antiviral resistance, especially given the use of smallpox-based vaccines (e.g., JYNNEOS).
+    - Understanding of evolutionary mechanisms, such as APOBEC3-mediated G→A mutation patterns observed in Clade IIb viruses, which may contribute to adaptation and ongoing human transmission.
+  - The Washington-focused Nextstrain build integrates these genomic insights into a regional context to assist public health response and inform cross-jurisdictional coordination.
+
+### Additional Resources
+  - CDC Mpox Overview: https://www.cdc.gov/mpox/
+
+  - WHO Mpox Factsheet: https://www.who.int/news-room/fact-sheets/detail/mpox
+
+  - Nextstrain Global MPXV Build: https://nextstrain.org/monkeypox/hmpxv1
+
+  - Scientific Background: Gigante et al., 2023, Emerging Infectious Diseases – “Multiple Lineages of Monkeypox Virus Detected During the 2022 Outbreak.”
 
 ## Scientific Decisions
 Nextstrain builds are designed for specific purposes and not all types of builds for a particular pathogen will answer the same questions. The following are critical decisions that were made during the development of this build that should be kept in mind when analyzing the data and using this build.
