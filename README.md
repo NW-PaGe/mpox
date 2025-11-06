@@ -171,7 +171,9 @@ After successfully running the build there will be two output folders containing
 - `auspice/` folder contains `mpox_wa.JSON` and `mpox_wa_root_sequence.JSON`
 - `results/` folder contains `hmpxv1_wa/`
   - [Link to `results` folder wiki](https://github.com/NW-PaGe/mpox/wiki/results)
-  - 
+
+For more detailed information on the complete file structure of this repo please refer to our [wiki](https://github.com/NW-PaGe/mpox/wiki) 
+
 ## Visualizing Results
 Once your build completes successfully, the results can be explored using Nextstrain Auspice, either locally or on the Nextstrain web platform.
 
@@ -225,6 +227,9 @@ For any questions please submit them to our [Discussions](https://github.com/org
 ## License
 This project is licensed under a modified GPL-3.0 License.
 You may use, modify, and distribute this work, but commercial use is strictly prohibited without prior written permission.
+
+## Acknowledgements 
+We gratefully acknowledge the contributions of the AMD teams (Microbiology, MEP, Bioinformatics, DIQA), Washington State Public Health Laboratories (WA PHL), and our colleagues at the Washington State Department of Health, whose expertise and dedication made this work possible. We also extend our sincere thanks to the Nextstrain development team for their ongoing collaboration and support.
 
 ## Acknowledgements
 This work is made possible by the open sharing of genetic data by research groups from all over the world. We gratefully acknowledge their contributions. Special thanks to Kristian Andersen, Josh Batson, David Blazes, Jesse Bloom, Peter Bogner, Anderson Brito, Matt Cotten, Ana Crisan, Tulio de Oliveira, Gytis Dudas, Vivien Dugan, Karl Erlandson, Nuno Faria, Jennifer Gardy, Nate Grubaugh, Becky Kondor, Dylan George, Ian Goodfellow, Betz Halloran, Christian Happi, Jeff Joy, Paul Kellam, Philippe Lemey, Nick Loman, Steph Lunn, Duncan MacCannell, Erick Matsen, Sebastian Maurer-Stroh, Placide Mbala, Danny Park, Oliver Pybus, Andrew Rambaut, Colin Russell, Pardis Sabeti, Katherine Siddle, Kristof Theys, Dave Wentworth, Shirlee Wohl and Cecile Viboud for comments, suggestions and data sharing.
