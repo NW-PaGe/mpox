@@ -121,3 +121,17 @@ MG693723    # Spotty/gappy/clusters
 
 PP852989    # Nigerian overdiverged B.1
 OP605587    # Slovenia overdiverged B.1
+
+PQ368495    # Off the clock, no mutations vs 3y older sequence
+PP748917    # Off the clock, no mutations vs 3y older sequence
+
+OZ261647    # Overdiverged A.2.2 (G.1 Sierra Leone)
+
+PP_004BJJM    # Clade Ia/Ib intermediate -> recombinant or contamination/coinfection
+
+PP_000YWQ   # B.1 with reversions
+PP_0011BTZ  # B.1 with reversions
+
+PP_003416A	# G.1 with many reversions interspersed
+
+PP_004DYJ3  # clade Ib/IIb recombinant that messes up phylogeny

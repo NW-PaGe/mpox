@@ -1,17 +1,22 @@
+inputs:
+  - name: pathoplexus
+    metadata: "https://data.nextstrain.org/files/workflows/mpox/metadata_with_restricted.tsv.zst"
+    sequences: "https://data.nextstrain.org/files/workflows/mpox/sequences_with_restricted.fasta.zst"
+
 auspice_config: "defaults/mpxv/auspice_config.json"
 include: "defaults/mpxv/include.txt"
+exclude: "defaults/exclude.txt"
 reference: "defaults/reference.fasta"
 genome_annotation: "defaults/genome_annotation.gff3"
 genbank_reference: "defaults/reference.gb"
 lat_longs: "defaults/lat_longs.tsv"
+color_ordering: "defaults/color_ordering.tsv"
+color_scheme: "defaults/color_schemes.tsv"
 description: "defaults/description.md"
 clades: "defaults/clades.tsv"
 tree_mask: "defaults/tree_mask.tsv"
 
-# Use `accession` as the ID column since `strain` currently contains duplicates¹.
-# ¹ https://github.com/nextstrain/mpox/issues/33
-strain_id_field: "accession"
-display_strain_field: "strain"
+strain_id_field: "PPX_accession"
 
 build_name: "mpxv"
 auspice_name: "mpox_all-clades"
@@ -19,53 +24,21 @@ auspice_name: "mpox_all-clades"
 filter:
   min_date: 1950
   min_length: 100000
+  query: "(QC_rare_mutations == 'good' | QC_rare_mutations == 'mediocre')"
 
 ### Set 1: Non-B.1 sequences: use all
 ### Set 2: B.1 sequences: small sample across year/country, maybe month
 subsample:
-  non_b1:
-    group_by: "--group-by clade year country"
-    sequences_per_group: "--sequences-per-group 50"
-    exclude_lineages:
-      - B.1
-      - B.1.1
-      - B.1.2
-      - B.1.3
-      - C.1
-      - C.1.1
-      - E.1
-      - E.2
-      - E.3
-      - B.1.4
-      - B.1.5
-      - B.1.6
-      - D.1
-      - B.1.7
-      - B.1.8
-      - B.1.9
-      - B.1.10
-      - B.1.11
-      - B.1.12
-      - B.1.13
-      - B.1.14
-      - B.1.15
-      - B.1.16
-      - B.1.17
-      - B.1.18
-      - B.1.19
-      - B.1.20
-      - F.1
-      - F.2
-      - F.3
-      - F.4
-      - F.5
-      - F.6
-      - B.1.21
-      - B.1.22
-      - B.1.23
-  b1:
-    group_by: "--group-by country year"
-    sequences_per_group: "--subsample-max-sequences 100"
+  non_b1: >-
+    --group-by clade year country
+    --sequences-per-group 50
+    --exclude-where
+    lineage!=
+  b1: >-
+    --group-by country year
+    --subsample-max-sequences 500
+    --exclude-where
+    lineage=
 
 ## align
 max_indel: 10000
@@ -82,7 +55,7 @@ clock_std_dev: 6e-6
 divergence_units: "mutations-per-site"
 
 traits:
-  columns: ""
+  columns: []
   sampling_bias_correction: 3
 
 ## recency

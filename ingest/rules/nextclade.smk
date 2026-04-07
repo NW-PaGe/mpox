@@ -3,7 +3,7 @@ import sys
 
 rule get_nextclade_dataset:
     output:
-        temp("data/mpxv.zip"),
+        "data/mpxv.zip",
     params:
         dataset_name="MPXV",
     log:
@@ -12,9 +12,11 @@ rule get_nextclade_dataset:
         "benchmarks/get_nextclade_dataset.txt"
     shell:
         r"""
+        exec &> >(tee {log:q})
+
         nextclade3 dataset get \
             --name {params.dataset_name:q} \
-            --output-zip {output:q} 2>&1 | tee {log}
+            --output-zip {output:q}
         """
 
 
@@ -37,6 +39,8 @@ rule run_nextclade:
         "benchmarks/run_nextclade.txt"
     shell:
         r"""
+        exec &> >(tee {log:q})
+
         nextclade3 run \
             {input.sequences:q} \
             --jobs {threads:q} \
@@ -44,7 +48,7 @@ rule run_nextclade:
             --input-dataset {input.dataset:q} \
             --output-tsv {output.nextclade:q} \
             --output-fasta {output.alignment:q} \
-            --output-translations {params.translations:q} 2>&1 | tee {log}
+            --output-translations {params.translations:q}
 
         zip -rj {output.translations:q} results/translations
         """
@@ -66,7 +70,7 @@ rule nextclade_metadata:
     input:
         nextclade="results/nextclade.tsv",
     output:
-        nextclade_metadata=temp("results/nextclade_metadata.tsv"),
+        nextclade_metadata="results/nextclade_metadata.tsv",
     params:
         nextclade_id_field=config["nextclade"]["id_field"],
         nextclade_field_map=[
@@ -79,12 +83,14 @@ rule nextclade_metadata:
         "benchmarks/nextclade_metadata.txt"
     shell:
         r"""
-        (tsv-select --header --fields {params.nextclade_fields:q} {input.nextclade} \
+        exec &> >(tee {log:q})
+
+        csvtk cut -t --fields {params.nextclade_fields:q} {input.nextclade} \
         | augur curate rename \
             --metadata - \
             --id-column {params.nextclade_id_field:q} \
             --field-map {params.nextclade_field_map:q} \
-            --output-metadata {output.nextclade_metadata:q} ) 2>&1 | tee {log}
+            --output-metadata {output.nextclade_metadata:q}
         """
 
 
@@ -103,6 +109,8 @@ rule join_metadata_and_nextclade:
         "benchmarks/join_metadata_and_nextclade.txt"
     shell:
         r"""
+        exec &> >(tee {log:q})
+
         augur merge \
             --metadata \
                 metadata={input.metadata:q} \
@@ -111,5 +119,5 @@ rule join_metadata_and_nextclade:
                 metadata={params.metadata_id_field:q} \
                 nextclade={params.nextclade_id_field:q} \
             --output-metadata {output.metadata:q} \
-            --no-source-columns 2>&1 | tee {log}
+            --no-source-columns
         """

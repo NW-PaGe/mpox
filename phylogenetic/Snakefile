@@ -1,6 +1,18 @@
 from packaging import version
 from augur.__version__ import __version__ as augur_version
+import os
 import sys
+from snakemake.utils import min_version
+
+# Minimum Snakemake version needed for the storage plugins used in remote_files.smk
+min_version("8.0.0")
+
+# The 'exec &> >(tee {log:q})' in each rule makes Python think it's not connected to terminal
+# Setting unbuffered makes it behave as expected
+# Not sure I'm a fan of the exec stuff, might make more sense to add as a feature to snakemake
+# Like the ubiquitous benchmarking, to reduce repetition/boilerplate.
+os.environ["PYTHONUNBUFFERED"] = "1"
+
 
 min_augur_version = "22.2.0"
 if version.parse(augur_version) < version.parse(min_augur_version):
@@ -32,12 +44,15 @@ rule all:
         auspice_json=f"{auspice_dir}/{AUSPICE_FILENAME}.json",
         root_sequence_json=f"{auspice_dir}/{AUSPICE_FILENAME}_root-sequence.json",
     shell:
-        """
-        cp {input.auspice_json} {output.auspice_json}
-        cp {input.root_sequence} {output.root_sequence_json}
+        r"""
+        cp {input.auspice_json:q} {output.auspice_json:q}
+        cp {input.root_sequence:q} {output.root_sequence_json:q}
         """
 
 
+include: "../shared/vendored/snakemake/remote_files.smk"
+include: "rules/config.smk"
+include: "rules/merge_inputs.smk"
 include: "rules/prepare_sequences.smk"
 include: "rules/construct_phylogeny.smk"
 include: "rules/annotate_phylogeny.smk"

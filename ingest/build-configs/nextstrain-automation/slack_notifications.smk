@@ -22,16 +22,17 @@ if not slack_envvars_defined:
 S3_SRC = "s3://nextstrain-data/files/workflows/mpox"
 
 
-rule notify_on_genbank_record_change:
+rule notify_on_input_data_change:
     input:
-        genbank_ndjson="data/genbank.ndjson",
+        ppx_ndjson="results/ppx.ndjson.zst",
     output:
-        touch("data/notify/genbank-record-change.done"),
+        touch("data/notify/input-data-change.done"),
     params:
         s3_src=S3_SRC,
+        vendored_scripts=VENDORED_SCRIPTS,
     shell:
         """
-        ./vendored/notify-on-record-change {input.genbank_ndjson} {params.s3_src:q}/genbank.ndjson.xz Genbank
+        {params.vendored_scripts}/notify-on-record-change {input.ppx_ndjson} {params.s3_src:q}/ppx.ndjson.zst Pathoplexus
         """
 
 
@@ -42,15 +43,16 @@ rule notify_on_metadata_diff:
         touch("data/notify/metadata-diff.done"),
     params:
         s3_src=S3_SRC,
+        vendored_scripts=VENDORED_SCRIPTS,
     shell:
         """
-        ./vendored/notify-on-diff {input.metadata} {params.s3_src:q}/metadata.tsv.gz
+        {params.vendored_scripts}/notify-on-diff {input.metadata} {params.s3_src:q}/metadata.tsv.zst
         """
 
 
 onstart:
-    shell("./vendored/notify-on-job-start Ingest nextstrain/mpox")
+    shell(f"{VENDORED_SCRIPTS}/notify-on-job-start Ingest nextstrain/mpox")
 
 
 onerror:
-    shell("./vendored/notify-on-job-fail Ingest nextstrain/mpox")
+    shell(f"{VENDORED_SCRIPTS}/notify-on-job-fail Ingest nextstrain/mpox")

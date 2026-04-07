@@ -12,11 +12,13 @@ rule trigger_build:
     Triggering monekypox builds via repository action type `rebuild`.
     """
     input:
-        metadata_upload="data/upload/s3/metadata.tsv.gz.done",
-        fasta_upload="data/upload/s3/sequences.fasta.xz.done",
+        metadata_upload="data/upload/s3/metadata_with_restricted.tsv.zst.done",
+        fasta_upload="data/upload/s3/sequences_with_restricted.fasta.zst.done",
     output:
         touch("data/trigger/rebuild.done"),
+    params:
+        vendored_scripts=VENDORED_SCRIPTS,
     shell:
         """
-        ./vendored/trigger-on-new-data nextstrain/mpox rebuild {input.metadata_upload} {input.fasta_upload}
+        {params.vendored_scripts}/trigger-on-new-data nextstrain/mpox rebuild {input.metadata_upload} {input.fasta_upload}
         """

@@ -1,33 +1,50 @@
-# Sources of sequences to include in the ingest run
-sources: ['genbank']
-# Pathogen NCBI Taxonomy ID
-ncbi_taxon_id: '10244'
-# Renames the NCBI dataset headers
-ncbi_field_map: 'defaults/ncbi-dataset-field-map.tsv'
-
 # Params for the curate rule
 curate:
   # Fields to rename.
   # This is the first step in the pipeline, so any references to field names
   # in the configs below should use the new field names
   field_map:
-    collected: date
-    submitted: date_submitted
-    genbank_accession: accession
-    submitting_organization: institution
+    accession: PPX_accession
+    accessionVersion: PPX_accession_version
+    insdcAccessionBase: INSDC_accession
+    insdcAccessionFull: INSDC_accession_version
+    # sourcedb: database  # Where original submission was made: Pathoplexus vs INSDC
+    specimenCollectorSampleId: strain
+    geoLocContinent: region
+    geoLocCountry: country
+    geoLocAdmin1: division
+    geoLocAdmin2: location
+    geoLocCity: city
+    geoLocSite: site
+    # geo-region: region # We need to derive region from country (possibly do in PPX preprocessing)
+    sampleCollectionDate: date
+    earliestReleaseDate: date_released
+    releasedDate: date_updated
+    length: length
+    hostNameScientific: host
+    # isolate-lineage-source: isolation_source
+    bioprojectAccession: bioproject_accession
+    biosampleAccession: biosample_accessions
+    insdcRawReadsAccession: sra_accession
+    authors: full_authors
+    authorAffiliations: institution
+    dataUseTerms: dataUseTerms
+    dataUseTermsRestrictedUntil: restrictedUntil
+    dataUseTermsUrl: dataUseTerms__url
+    groupId: Pathoplexus_group_id
+    groupName: Pathoplexus_group
+    # TODO: There are more fields I should look into porting
   # Standardized strain name regex
   # Currently accepts any characters because we do not have a clear standard for strain names
   strain_regex: '^.+$'
   # Back up strain name field if 'strain' doesn't match regex above
-  strain_backup_fields: ['accession']
+  strain_backup_fields: ['submissionId','PPX_accession']
   # List of date fields to standardize
-  date_fields: ['date', 'date_submitted']
+  date_fields: ['date', 'date_released', 'date_updated']
   # Expected date formats present in date fields
   # These date formats should use directives expected by datetime
   # See https://docs.python.org/3.9/library/datetime.html#strftime-and-strptime-format-codes
   expected_date_formats: ['%Y', '%Y-%m', '%Y-%m-%d', '%Y-%m-%dT%H:%M:%SZ']
-  # The expected field that contains the GenBank geo_loc_name
-  genbank_location_field: location
   # Titlecase rules
   titlecase:
     # Abbreviations not cast to titlecase, keeps uppercase
@@ -46,31 +63,45 @@ curate:
   # Field name for the generated abbreviated authors
   abbr_authors_field: 'authors'
   # Local geolocation rules that are only applicable to mpox data
-  local_geolocation_rules: 'defaults/geolocation-rules.tsv'
+  local_geolocation_rules: 'geolocation-rules.tsv'
   # User annotations file
-  annotations: 'defaults/annotations.tsv'
+  annotations: 'annotations.tsv'
   # ID field used to merge annotations
-  annotations_id: 'accession'
+  annotations_id: 'PPX_accession'
   # Field to use as the sequence ID in the FASTA file
-  id_field: 'accession'
+  id_field: 'PPX_accession'
   # Field to use as the sequence in the FASTA file
   sequence_field: 'sequence'
   # Final output columns for the metadata TSV
   metadata_columns: [
-    'accession',
-    'genbank_accession_rev',
+    'PPX_accession',
+    'PPX_accession__url',
+    'PPX_accession_version',
+    'PPX_accession_version__url',
+    'INSDC_accession_version',
+    'INSDC_accession_version__url',
     'strain',
     'date',
     'region',
     'country',
     'division',
     'location',
+    'length',
     'host',
-    'date_submitted',
+    'date_released',
+    'date_updated',
     'sra_accession',
     'authors',
     'full_authors',
-    'institution'
+    'institution',
+    'dataUseTerms',
+    'dataUseTerms__url',
+    'restrictedUntil',
+    'displayName',
+    'Pathoplexus_group',
+    'Pathoplexus_group_id',
+    'Pathoplexus_group__url',
+    'submission_database',
   ]
 
 # Params for Nextclade related rules
@@ -90,6 +121,7 @@ nextclade:
     totalMissing: "missing_data"
     totalSubstitutions: "divergence"
     totalNonACGTNs: "nonACGTN"
+    "privateNucMutations.totalPrivateSubstitutions": "private_substitutions"
     qc.missingData.status: "QC_missing_data"
     qc.mixedSites.status: "QC_mixed_sites"
     qc.privateMutations.status: "QC_rare_mutations"

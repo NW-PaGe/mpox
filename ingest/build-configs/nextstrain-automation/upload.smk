@@ -36,8 +36,8 @@ def _get_upload_inputs(wildcards):
     if send_notifications:
         flag_file = []
 
-        if inputs["file_to_upload"] == "data/genbank.ndjson":
-            flag_file = "data/notify/genbank-record-change.done"
+        if inputs["file_to_upload"] == "results/ppx.ndjson.zst":
+            flag_file = "data/notify/input-data-change.done"
         elif inputs["file_to_upload"] == "results/metadata.tsv":
             flag_file = "data/notify/metadata-diff.done"
 
@@ -55,9 +55,10 @@ rule upload_to_s3:
         quiet="" if send_notifications else "--quiet",
         s3_dst=config["upload"].get("s3", {}).get("dst", ""),
         cloudfront_domain=config["upload"].get("s3", {}).get("cloudfront_domain", ""),
+        vendored_scripts=VENDORED_SCRIPTS,
     shell:
         """
-        ./vendored/upload-to-s3 \
+        {params.vendored_scripts}/upload-to-s3 \
             {params.quiet} \
             {input.file_to_upload:q} \
             {params.s3_dst:q}/{wildcards.remote_file_name:q} \

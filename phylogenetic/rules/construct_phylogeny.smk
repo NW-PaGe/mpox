@@ -24,13 +24,21 @@ rule tree:
         tree_mask=config["tree_mask"],
     output:
         tree=build_dir + "/{build_name}/tree_raw.nwk",
-    threads: workflow.cores
+    # It's faster to use 4 threads rather than doing a full search - hence hardcoding 4
+    threads: min(workflow.cores, 4)
+    log:
+        "logs/{build_name}/tree.txt",
+    benchmark:
+        "benchmarks/{build_name}/tree.txt"
     shell:
-        """
+        r"""
+        exec &> >(tee {log:q})
+
         augur tree \
-            --alignment {input.alignment} \
-            --exclude-sites {input.tree_mask} \
-            --output {output.tree} \
+            --alignment {input.alignment:q} \
+            --exclude-sites {input.tree_mask:q} \
+            --tree-builder-args "-T {threads}" \
+            --output {output.tree:q} \
             --nthreads {threads}
         """
 
@@ -45,14 +53,24 @@ rule fix_tree:
     output:
         tree=build_dir + "/{build_name}/tree_fixed.nwk",
     params:
-        root=lambda w: config.get("treefix_root", ""),
+        root=lambda w: (
+            ("--root " + config["treefix_root"])
+            if config.get("treefix_root", False)
+            else ""
+        ),
+    log:
+        "logs/{build_name}/fix_tree.txt",
+    benchmark:
+        "benchmarks/{build_name}/fix_tree.txt"
     shell:
-        """
+        r"""
+        exec &> >(tee {log:q})
+
         python3 scripts/fix_tree.py \
-            --alignment {input.alignment} \
-            --input-tree {input.tree} \
+            --alignment {input.alignment:q} \
+            --input-tree {input.tree:q} \
             {params.root} \
-            --output {output.tree}
+            --output {output.tree:q}
         """
 
 
@@ -81,34 +99,42 @@ rule refine:
         clock_filter_iqd=0,
         root=config["root"],
         clock_rate=(
-            f"--clock-rate {config['clock_rate']}" if "clock_rate" in config else ""
+            ("--clock-rate " + str(config["clock_rate"]))
+            if "clock_rate" in config
+            else ""
         ),
         clock_std_dev=(
-            f"--clock-std-dev {config['clock_std_dev']}"
+            ("--clock-std-dev " + str(config["clock_std_dev"]))
             if "clock_std_dev" in config
             else ""
         ),
         strain_id=config["strain_id_field"],
         divergence_units=config["divergence_units"],
+    log:
+        "logs/{build_name}/refine.txt",
+    benchmark:
+        "benchmarks/{build_name}/refine.txt"
     shell:
-        """
+        r"""
+        exec &> >(tee {log:q})
+
         augur refine \
-            --tree {input.tree} \
-            --alignment {input.alignment} \
-            --metadata {input.metadata} \
-            --metadata-id-columns {params.strain_id} \
-            --output-tree {output.tree} \
+            --tree {input.tree:q} \
+            --alignment {input.alignment:q} \
+            --metadata {input.metadata:q} \
+            --metadata-id-columns {params.strain_id:q} \
+            --output-tree {output.tree:q} \
             --timetree \
-            --root {params.root} \
+            --root {params.root:q} \
             --precision 3 \
             --keep-polytomies \
             --use-fft \
             {params.clock_rate} \
             {params.clock_std_dev} \
-            --output-node-data {output.node_data} \
-            --coalescent {params.coalescent} \
-            --date-inference {params.date_inference} \
+            --output-node-data {output.node_data:q} \
+            --coalescent {params.coalescent:q} \
+            --date-inference {params.date_inference:q} \
             --date-confidence \
-            --divergence-units {params.divergence_units} \
-            --clock-filter-iqd {params.clock_filter_iqd}
+            --divergence-units {params.divergence_units:q} \
+            --clock-filter-iqd {params.clock_filter_iqd:q}
         """

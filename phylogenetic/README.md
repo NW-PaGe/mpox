@@ -45,11 +45,14 @@ nextstrain view .
 
 Input sequences and metadata can be retrieved from data.nextstrain.org
 
-* [sequences.fasta.xz](https://data.nextstrain.org/files/workflows/mpox/sequences.fasta.xz)
-* [metadata.tsv.gz](https://data.nextstrain.org/files/workflows/mpox/metadata.tsv.gz)
+* [sequences.fasta.zst](https://data.nextstrain.org/files/workflows/mpox/sequences.fasta.zst)
+* [metadata.tsv.zst](https://data.nextstrain.org/files/workflows/mpox/metadata.tsv.zst)
 
-The above datasets have been preprocessed and cleaned from GenBank using the
-[ingest/](../ingest/) workflow and are updated at regular intervals.
+The above datasets have been preprocessed and cleaned from Pathoplexus (which includes INSDC data) using the [ingest/](../ingest/) workflow and are updated at regular intervals.
+
+These files are updated regularly as new sequences become available. For reproducibility, please download and save your own copies of the data files you use in your analyses, as the file contents at these URLs will change over time.
+
+Archived data files from before the Pathoplexus transition (published 05 November 2025) are available at [data.nextstrain.org/files/workflows/mpox/archive/20251105/](https://data.nextstrain.org/files/workflows/mpox/archive/20251105/)
 
 Note that these data are generously shared by many labs around the world.
 If you analyze and plan to publish using these data, please contact these labs first.
@@ -57,7 +60,7 @@ If you analyze and plan to publish using these data, please contact these labs f
 Within the analysis pipeline, these data are fetched from data.nextstrain.org and written to `data/` with:
 
 ```bash
-nextstrain build . data/sequences.fasta.xz data/metadata.tsv.gz
+nextstrain build . data/sequences.fasta.zst data/metadata.tsv.zst
 ```
 
 ### Run analysis pipeline
@@ -119,7 +122,7 @@ To update, run:
 
 ```bash
 nextstrain build . update_example_data -F \
-    --configfiles build-configs/ci/config.yaml build-configs/chores/config.yaml
+    --configfiles defaults/mpxv/config.yaml build-configs/chores/config.yaml
 ```
 
 ## Data use

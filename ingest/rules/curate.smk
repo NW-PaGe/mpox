@@ -2,7 +2,7 @@
 This part of the workflow handles curating the data into standardized
 formats and expects input file
 
-    sequences_ndjson = "data/sequences.ndjson"
+    sequences_ndjson = "data/ppx_flat.ndjson"
 
 This will produce output files as
 
@@ -13,21 +13,49 @@ Parameters are expected to be defined in `config.curate`.
 """
 
 
-def format_field_map(field_map: dict[str, str]) -> str:
+def format_field_map(field_map: dict[str, str]) -> list[str]:
     """
-    Format dict to `"key1"="value1" "key2"="value2"...` for use in shell commands.
+    Format entries to the format expected by `augur curate --field-map`.
+    When used in a Snakemake shell block, the list is automatically expanded and
+    spaces are handled by quoted interpolation.
     """
-    return " ".join([f'"{key}"="{value}"' for key, value in field_map.items()])
+    return [f"{key}={value}" for key, value in field_map.items()]
+
+
+rule generate_continent:
+    input:
+        ndjson="results/ppx_flat.ndjson.zst",
+        script="scripts/generate_continent.py",
+    output:
+        ndjson="results/ppx_flat_continent.ndjson.zst",
+    benchmark:
+        "benchmarks/generate_continent.txt"
+    log:
+        "logs/generate_continent.txt",
+    shell:
+        r"""
+        exec &> >(tee {log:q})
+
+        python {input.script:q} \
+            --input {input.ndjson:q} \
+            --output {output.ndjson:q}
+        """
 
 
 rule curate:
     input:
-        sequences_ndjson="data/sequences.ndjson",
-        geolocation_rules=config["curate"]["local_geolocation_rules"],
-        annotations=config["curate"]["annotations"],
+        sequences_ndjson="results/ppx_flat_continent.ndjson.zst",
+        geolocation_rules=resolve_config_path(
+            config["curate"]["local_geolocation_rules"]
+        ),
+        annotations=resolve_config_path(config["curate"]["annotations"]),
+        urls_script="scripts/curate-urls.py",
     output:
         metadata="data/all_metadata.tsv",
         sequences="results/sequences.fasta",
+        # ndjson="results/curated.ndjson.zst",
+    benchmark:
+        "benchmarks/curate.txt"
     log:
         "logs/curate.txt",
     params:
@@ -36,7 +64,6 @@ rule curate:
         strain_backup_fields=config["curate"]["strain_backup_fields"],
         date_fields=config["curate"]["date_fields"],
         expected_date_formats=config["curate"]["expected_date_formats"],
-        genbank_location_field=config["curate"]["genbank_location_field"],
         articles=config["curate"]["titlecase"]["articles"],
         abbreviations=config["curate"]["titlecase"]["abbreviations"],
         titlecase_fields=config["curate"]["titlecase"]["fields"],
@@ -47,36 +74,37 @@ rule curate:
         id_field=config["curate"]["id_field"],
         sequence_field=config["curate"]["sequence_field"],
     shell:
-        """
-        (cat {input.sequences_ndjson} \
+        r"""
+        exec &> >(tee {log:q})
+
+        zstdcat {input.sequences_ndjson:q} \
             | augur curate rename \
-                --field-map {params.field_map} \
+                --field-map {params.field_map:q} \
             | augur curate normalize-strings \
             | augur curate transform-strain-name \
-                --strain-regex {params.strain_regex} \
-                --backup-fields {params.strain_backup_fields} \
+                --strain-regex {params.strain_regex:q} \
+                --backup-fields {params.strain_backup_fields:q} \
             | augur curate format-dates \
-                --date-fields {params.date_fields} \
-                --expected-date-formats {params.expected_date_formats} \
-            | augur curate parse-genbank-location \
-                --location-field {params.genbank_location_field} \
+                --date-fields {params.date_fields:q} \
+                --expected-date-formats {params.expected_date_formats:q} \
             | augur curate titlecase \
-                --titlecase-fields {params.titlecase_fields} \
-                --articles {params.articles} \
-                --abbreviations {params.abbreviations} \
+                --titlecase-fields {params.titlecase_fields:q} \
+                --articles {params.articles:q} \
+                --abbreviations {params.abbreviations:q} \
             | augur curate abbreviate-authors \
-                --authors-field {params.authors_field} \
-                --default-value {params.authors_default_value} \
-                --abbr-authors-field {params.abbr_authors_field} \
+                --authors-field {params.authors_field:q} \
+                --default-value {params.authors_default_value:q} \
+                --abbr-authors-field {params.abbr_authors_field:q} \
             | augur curate apply-geolocation-rules \
-                --geolocation-rules {input.geolocation_rules} \
+                --geolocation-rules {input.geolocation_rules:q} \
+            | python {input.urls_script:q} \
             | augur curate apply-record-annotations \
-                --annotations {input.annotations} \
-                --id-field {params.annotations_id} \
-                --output-metadata {output.metadata} \
-                --output-fasta {output.sequences} \
-                --output-id-field {params.id_field} \
-                --output-seq-field {params.sequence_field} ) 2>> {log}
+                --annotations {input.annotations:q} \
+                --id-field {params.annotations_id:q} \
+                --output-metadata {output.metadata:q} \
+                --output-fasta {output.sequences:q} \
+                --output-id-field {params.id_field:q} \
+                --output-seq-field {params.sequence_field:q}
         """
 
 
@@ -87,8 +115,14 @@ rule subset_metadata:
         subset_metadata="data/subset_metadata.tsv",
     params:
         metadata_fields=",".join(config["curate"]["metadata_columns"]),
+    benchmark:
+        "benchmarks/subset_metadata.txt"
+    log:
+        "logs/subset_metadata.txt",
     shell:
-        """
-        tsv-select -H -f {params.metadata_fields} \
-            {input.metadata} > {output.subset_metadata}
+        r"""
+        exec &> >(tee {log:q})
+
+        csvtk cut -t -f {params.metadata_fields:q} \
+            {input.metadata:q} > {output.subset_metadata:q}
         """
