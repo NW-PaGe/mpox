@@ -82,6 +82,10 @@ phases:
 
       - echo "Downloading results from Batch job ${BATCH_JOB_ID}..."
       - nextstrain build --aws-batch --attach ${BATCH_JOB_ID} --download ${BUILD_TARGET}/auspice/ .
+
+      # FIX: remove massive snakemake metadata before AWS packages artifacts
+      - rm -rf phylogenetic/.snakemake
+      
       - echo "Logging into Nextstrain..."
       - nextstrain login --no-prompt
 
