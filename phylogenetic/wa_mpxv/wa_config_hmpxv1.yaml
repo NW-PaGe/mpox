@@ -1,14 +1,8 @@
-# to add WA metadata into the build without overlay, you can create a custom
-# snakemake rule like so below on lines 3 and 4
-#custom_rules:
- # - wa_mpxv/add_wa_metadata.smk
-
-#4/10/26 Fix due to AWS automation error
 inputs:
   - name: "nextstrain"
-    metadata: "https://data.nextstrain.org/files/workflows/mpxv/metadata.tsv"
-    sequences: "https://data.nextstrain.org/files/workflows/mpxv/sequences.fasta"
-    
+    metadata: "s3://wamep-nextstrain-mpox/mpox_data/metadata.tsv"
+    sequences: "s3://wamep-nextstrain-mpox/mpox_data/sequences.fasta"
+
 reference: "defaults/reference.fasta"
 ancestral_root_seq: "defaults/reference.fasta"
 genome_annotation: "defaults/genome_annotation.gff3"
@@ -23,14 +17,12 @@ tree_mask: "defaults/tree_mask.tsv"
 strain_id_field: "accession"
 display_strain_field: "strain"
 
-
 build_name: "hmpxv1_wa"
 auspice_name: "mpox_wa"
 
 filter:
   min_date: 2017
   min_length: 100000
-
 
 subsample:
   wa:
@@ -48,16 +40,12 @@ subsample:
     exclude_where: "division=Washington"
     query: "(outbreak == 'hMPXV-1') & (clade == 'IIb')"
 
-
-## align
 max_indel: 10000
 seed_spacing: 1000
 
-## treefix
 fix_tree: true
 treefix_root: "MK783032"
 
-## refine
 timetree: true
 root:
   - MK783032
@@ -70,7 +58,6 @@ traits:
   columns: []
   sampling_bias_correction: 3
 
-## recency
 recency: true
 
 mask:
