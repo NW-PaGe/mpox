@@ -31,6 +31,7 @@ subsample:
       - year
     sequences_per_group: 500
     exclude_where: "division!=Washington"
+    min_sequences: 10
     force: true
 
   global:
@@ -38,7 +39,8 @@ subsample:
       - lineage
     sequences_per_group: 500
     exclude_where: "division=Washington"
-    query: "(outbreak == 'hMPXV-1') & (clade == 'IIb')"
+    query: "clade == 'IIb'"
+    min_sequences: 10
 
 max_indel: 10000
 seed_spacing: 1000
