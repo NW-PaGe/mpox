@@ -34,14 +34,19 @@ filter:
 
 subsample:
   wa:
-    group_by: "--group-by division year"
-    sequences_per_group: "--sequences-per-group 500"
-    other_filters: "--exclude-where division!=Washington"
+    group_by:
+      - division
+      - year
+    sequences_per_group: 500
+    exclude_where: "division!=Washington"
     force: true
+
   global:
-    group_by: "--group-by lineage"
-    sequences_per_group: "--subsample-max-sequences 500"
-    other_filters: "--exclude-where division=Washington outbreak!=hMPXV-1 clade!=IIb"
+    group_by:
+      - lineage
+    sequences_per_group: 500
+    exclude_where: "division=Washington"
+    query: "(outbreak == 'hMPXV-1') & (clade == 'IIb')"
 
 
 ## align
