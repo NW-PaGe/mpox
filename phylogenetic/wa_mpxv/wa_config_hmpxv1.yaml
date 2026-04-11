@@ -3,6 +3,8 @@ inputs:
     metadata: "s3://wamep-nextstrain-mpox/mpox_data/metadata.tsv"
     sequences: "s3://wamep-nextstrain-mpox/mpox_data/sequences.fasta"
 
+sanitize_metadata: true
+
 reference: "defaults/reference.fasta"
 ancestral_root_seq: "defaults/reference.fasta"
 genome_annotation: "defaults/genome_annotation.gff3"
