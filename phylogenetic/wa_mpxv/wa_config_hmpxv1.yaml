@@ -1,22 +1,28 @@
+# to add WA metadata into the build without overlay, you can create a custom
+# snakemake rule like so below on lines 3 and 4
+#custom_rules:
+#  - wa_mpxv/add_wa_metadata.smk
+
 inputs:
   - name: "nextstrain"
-    metadata: "s3://wamep-nextstrain-mpox/mpox_data/metadata.tsv"
-    sequences: "s3://wamep-nextstrain-mpox/mpox_data/sequences.fasta"
-
-sanitize_metadata: true
+    metadata: "https://data.nextstrain.org/files/workflows/mpox/metadata_with_restricted.tsv.zst"
+    sequences: "https://data.nextstrain.org/files/workflows/mpox/sequences_with_restricted.fasta.zst"
 
 reference: "defaults/reference.fasta"
 ancestral_root_seq: "defaults/reference.fasta"
 genome_annotation: "defaults/genome_annotation.gff3"
 genbank_reference: "defaults/reference.gb"
 include: "wa_mpxv/include.txt"
+exclude: "defaults/exclude.txt"
 clades: "defaults/clades.tsv"
 lat_longs: "defaults/lat_longs.tsv"
+color_ordering: "defaults/color_ordering.tsv"
+color_scheme: "defaults/color_schemes.tsv"
 auspice_config: "wa_mpxv/wa_auspice_config_hmpxv1.json"
 description: "wa_mpxv/wa_description.md"
 tree_mask: "defaults/tree_mask.tsv"
 
-strain_id_field: "accession"
+strain_id_field: "PPX_accession"
 display_strain_field: "strain"
 
 build_name: "hmpxv1_wa"
@@ -25,35 +31,30 @@ auspice_name: "mpox_wa"
 filter:
   min_date: 2017
   min_length: 100000
+  query: "(QC_rare_mutations == 'good' | QC_rare_mutations == 'mediocre')"
 
 subsample:
   wa:
-    group_by:
-      - division
-      - year
-    sequences_per_group: 500
-    exclude_where: "division!=Washington"
-    min_sequences: 10
+    group_by: "--group-by division year"
+    sequences_per_group: "--sequences-per-group 500"
+    query: "'division == \"Washington\"'"
     force: true
 
   global:
-    group_by:
-      - lineage
-    sequences_per_group: 500
-    exclude_where: "division=Washington"
-    query: "clade == 'IIb'"
-    min_sequences: 10
+    group_by: "--group-by lineage"
+    sequences_per_group: "--subsample-max-sequences 500"
+    query: '"(division != \"Washington\") & (clade == \"IIb\")"'
 
 max_indel: 10000
 seed_spacing: 1000
 
 fix_tree: true
-treefix_root: "MK783032"
+treefix_root: "PP_000T4L2"
 
 timetree: true
 root:
-  - MK783032
-  - MK783030
+  - PP_000T4L2
+  - PP_000T4J6
 clock_rate: 5.7e-5
 clock_std_dev: 2e-5
 divergence_units: "mutations"
