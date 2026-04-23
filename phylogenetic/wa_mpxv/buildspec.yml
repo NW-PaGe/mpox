@@ -18,22 +18,6 @@ phases:
       - ls -la
 
       # -----------------------------
-      # Sync latest Nextstrain dataset → S3 (AUTOMATED)
-      # -----------------------------
-      - echo "Syncing latest Nextstrain mpox dataset to S3..."
-
-      - mkdir -p mpox_data
-      - cd mpox_data
-
-      - curl -L -o metadata.tsv https://data.nextstrain.org/files/workflows/mpxv/metadata.tsv
-      - curl -L -o sequences.fasta https://data.nextstrain.org/files/workflows/mpxv/sequences.fasta
-
-      - aws s3 cp metadata.tsv s3://wamep-nextstrain-mpox/mpox_data/metadata.tsv
-      - aws s3 cp sequences.fasta s3://wamep-nextstrain-mpox/mpox_data/sequences.fasta
-
-      - cd ..
-
-      # -----------------------------
       # Submit Nextstrain AWS Batch job
       # -----------------------------
       - echo "Submitting ${BUILD_NAME} build to AWS Batch..."
@@ -48,6 +32,7 @@ phases:
           --aws-batch-s3-bucket ${S3_BUCKET} \
           ${BUILD_TARGET} \
           --configfile ${CONFIG_FILES} \
+          --forceall \
           2>&1 | tee /tmp/nextstrain_output.log
 
         BATCH_JOB_ID=$(grep -oP 'AWS Batch Job ID: \K[a-f0-9-]+' /tmp/nextstrain_output.log)
