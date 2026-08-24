@@ -2,8 +2,8 @@
 
 ## Build Overview
 - **Build Name**: MPXV Washington Focused Build
-- **Pathogen/Strain**: MPXV/Monkeypox Virus/MPOX
-- **Scope**: Whole genome, IIb clade
+- **Pathogen/Strain**: MPXV/Monkeypox Virus/MPOX, clade IIb
+- **Scope**: Whole genome
 - **Purpose**: This repository contains the Nextstrain build for Washington State genomic surveillance of MPOX clade IIb. The purpose of this Nextstrain build is to monitor and analyze the genetic variations and spread of the MPOX virus within the Washington state region. By utilizing genomic sequencing data, this build helps track the lineage and evolution of the virus, facilitating early detection of any emerging variants. It ultimately aids public health officials in understanding and responding to the outbreak, ensuring that interventions are informed by the latest science.
 - **Considerations**: The Washington-focused MPOX build is located within the phylogenetic folder of the Nextstrain MPOX build. This document will explain the components of the Global MPOX build and its dependencies that the Washington-focused build relies on, as well as the dependencies specific to the Washington-focused build, providing necessary context and clarity.  
 

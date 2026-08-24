@@ -1,7 +1,7 @@
 {
   "title": "Genomic epidemiology of monkeypox virus - Washington state focused build",
   "maintainers": [
-    {"name": "Alena Schroeder, MPH", "url": "https://github.com/NW-PaGe/mpox"}
+    {"name": "WA DOH Molecular Epidemiology Program", "url": "https://doh.wa.gov/about-us/executive-offices/health-and-science/disease-control-and-health-statistics/communicable-disease-epidemiology/molecular-epidemiology-program"}
   ],
   "data_provenance": [
     {
@@ -9,18 +9,8 @@
       "url": "https://www.ncbi.nlm.nih.gov/genbank/"
     }
   ],
-  "build_url": "https://github.com/nextstrain/monkeypox",
+  "build_url": "https://github.com/NW-PaGe/mpox",
   "colorings": [
-    {
-      "key": "age",
-      "title": "Patient Age",
-      "type": "categorical"
-    },
-    {
-      "key": "sex",
-      "title": "Patient Sex",
-      "type": "categorical"
-    },
     {
       "key": "travel",
       "title": "Travel (Past 3 Weeks)",
