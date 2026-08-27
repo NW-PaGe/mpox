@@ -30,7 +30,7 @@ auspice_name: "mpox_wa"
 
 filter:
   min_date: 2017
-  min_length: 100000
+  min_length: 185000
   query: "(QC_rare_mutations == 'good' | QC_rare_mutations == 'mediocre')"
 
 subsample:
