@@ -108,7 +108,7 @@ The sequence was isolate from a human, within Rivers State, Nigeria and belongs 
 - **Inclusion/Exclusion**: 
 Rooting sequences MK783032 and MK783030 are included in the include.txt file, located here `mpox\phylogenetic\wa_mpxv`. 
 
-Samples that have been excluded from the Global MPXV build and subsequently the Washington focused build are located here, `mpox/phylogenetic/defaults/exclude_accessions.txt`. The excluded sequences consist of potential recombinants, duplicate sequences, those that do not align well, and highly divergent sequences, as well as overdiverged sequences or those with questionable clusters. Additional filtering criteria for exclusions include sequences from before 2017 and those that do not meet the minimum length requirement of 100,000 base pairs.
+Samples that have been excluded from the Global MPXV build and subsequently the Washington focused build are located here, `mpox/phylogenetic/defaults/exclude_accessions.txt`. The excluded sequences consist of potential recombinants, duplicate sequences, those that do not align well, and highly divergent sequences, as well as overdiverged sequences or those with questionable clusters. Additional filtering criteria for exclusions include sequences from before 2017 and those that do not meet the minimum length requirement of 185,000 base pairs.
 
 ## Getting Started
 Some high-level features and capabilities specific to this build include:
