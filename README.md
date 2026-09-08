@@ -2,8 +2,8 @@
 
 ## Build Overview
 - **Build Name**: MPXV Washington Focused Build
-- **Pathogen/Strain**: MPXV/Monkeypox Virus/MPOX
-- **Scope**: Whole genome, IIb clade
+- **Pathogen/Strain**: MPXV/Monkeypox Virus/MPOX, clade IIb
+- **Scope**: Whole genome
 - **Purpose**: This repository contains the Nextstrain build for Washington State genomic surveillance of MPOX clade IIb. The purpose of this Nextstrain build is to monitor and analyze the genetic variations and spread of the MPOX virus within the Washington state region. By utilizing genomic sequencing data, this build helps track the lineage and evolution of the virus, facilitating early detection of any emerging variants. It ultimately aids public health officials in understanding and responding to the outbreak, ensuring that interventions are informed by the latest science.
 - **Considerations**: The Washington-focused MPOX build is located within the phylogenetic folder of the Nextstrain MPOX build. This document will explain the components of the Global MPOX build and its dependencies that the Washington-focused build relies on, as well as the dependencies specific to the Washington-focused build, providing necessary context and clarity.  
 
@@ -82,7 +82,7 @@
 Nextstrain builds are designed for specific purposes and not all types of builds for a particular pathogen will answer the same questions. The following are critical decisions that were made during the development of this build that should be kept in mind when analyzing the data and using this build.
 
 - **Subsampling**: 
-The subsampling strategy for the Washington focused build can be located here `mpox/phylogenetic/wa_mpxv/wa_config_hmpxv1.yaml`. The Washington-focused build filters out samples before 2017 and those with less than 100,000 base pairs. It then organizes the remaining samples by division year, with 500 sequences in each group, while excluding samples that are not from Washington state. In contrast, the Global build categorizes sequences by lineage, also with 500 sequences per group, and excludes samples from Washington and those not belonging to the IIb clade. The Washington-focused build subsequently combines these datasets for use in the final build.
+The subsampling strategy for the Washington focused build can be located here `mpox/phylogenetic/wa_mpxv/wa_config_hmpxv1.yaml`. The Washington-focused build filters out samples before 2017 and those with less than 185,000 base pairs. It then organizes the remaining samples by division year, with 500 sequences in each group, while excluding samples that are not from Washington state. In contrast, the Global build categorizes sequences by lineage, also with 500 sequences per group, and excludes samples from Washington and those not belonging to the IIb clade. The Washington-focused build subsequently combines these datasets for use in the final build.
 
   Washington Focused MPOX Build Subsampling Schema:
     group_by: "--group-by division year"
