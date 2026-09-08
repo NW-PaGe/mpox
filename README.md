@@ -162,7 +162,7 @@ When you run the build using `nextstrain build .`, Nextstrain uses Snakemake as 
 ## Run the Build
 Ensure you are in the `mpox/phylogenetic` folder when running this build.
 ```
- nextstrain build --cpus 6 . --configfile wa_mpxv/wa_config_hmpxv1.yaml
+ nextstrain build --configfile wa_mpxv/wa_config_hmpxv1.yaml
 ```
 
 ## Expected Outputs
