@@ -162,7 +162,27 @@ When you run the build using `nextstrain build .`, Nextstrain uses Snakemake as 
 ## Run the Build
 Ensure you are in the `mpox/phylogenetic` folder when running this build.
 ```
- nextstrain build --cpus 6 . --configfile wa_mpxv/wa_config_hmpxv1.yaml
+ nextstrain build --configfile wa_mpxv/wa_config_hmpxv1.yaml
+```
+
+
+#### Run the Build with Private Data Spike in
+
+This will incorporate whatever private data you provide alongside the exiting ingest & sampling rules, with parameter's specified in this config: ```phylogenetic/wa_mpxv/wa_private-config_hmpxv1.yaml```. Note that the min_length filter is strict at 185,000 bases, and may need to be lowered depending on the quaility of your private data.
+1. Add private data:
+    - ```phylogenetic/private_data/private_metadata.tsv``` Metadata must include the below columns (quotes excluded):
+        - ```PPX_accession```: The WA ID associated with the sample
+        - ```strain```: Also the WA ID - this replaces accession as the ID in the final .json
+        - ```clade_membership```: "IIb"
+        - ```date```: in format YYYY-MM-DD (use X for any unknown digit)
+        - ```region```: 'North America'
+        - ```division```: 'Washington'
+        - ```country```: 'USA'
+        - ```QC_rare_mutations```: 'good'
+    - ```phylogenetic/private_data/private_sequences.fasta```
+2. Ensure you are in the `mpox/phylogenetic` folder when running this build.
+```
+ nextstrain build . --configfile wa_mpxv/wa_private-config_hmpxv1.yaml --forceall
 ```
 
 ## Expected Outputs
